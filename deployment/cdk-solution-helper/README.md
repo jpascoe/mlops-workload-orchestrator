@@ -94,7 +94,7 @@ After CloudFormation deployment:
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "S3Bucket": "solutions-us-east-1",
+          "S3Bucket": "solutions-ap-southeast-2",
           "S3Key": "trademarked-solution-name/v1.0.0/asset.d513e93e266931de36e1c7e79c27b196f84ab928fce63d364d9152ca501551f7.zip"
         }, ...
         "Handler": "assetd513e93e266931de36e1c7e79c27b196f84ab928fce63d364d9152ca501551f7/index.handler"

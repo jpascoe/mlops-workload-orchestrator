@@ -33,7 +33,7 @@ from lib.blueprints.byom.pipeline_definitions.helpers import (
     suppress_sns,
 )
 from lib.blueprints.byom.pipeline_definitions.templates_parameters import (
-    ParameteresFactory as pf,
+    ParametersFactory as pf,
     ConditionsFactory as cf,
 )
 from lib.blueprints.byom.pipeline_definitions.deploy_actions import (
@@ -529,7 +529,7 @@ class MLOpsStack(core.Stack):
         )
 
         # Create Template Interface
-        paramaters_list = [
+        parameters_list = [
             notification_email.logical_id,
             git_address.logical_id,
             existing_bucket.logical_id,
@@ -539,7 +539,7 @@ class MLOpsStack(core.Stack):
             allow_detailed_error_message.logical_id,
         ]
 
-        paramaters_labels = {
+        parameters_labels = {
             f"{notification_email.logical_id}": {
                 "default": "Notification Email (Required)"
             },
@@ -567,8 +567,8 @@ class MLOpsStack(core.Stack):
         is_delegated_admin = None
         if multi_account:
             (
-                paramaters_list,
-                paramaters_labels,
+                parameters_list,
+                parameters_labels,
                 is_delegated_admin,
             ) = configure_multi_account_parameters_permissions(
                 self,
@@ -577,8 +577,8 @@ class MLOpsStack(core.Stack):
                 ecr_repo,
                 model_registry,
                 provisioner_apigw_lambda.lambda_function,
-                paramaters_list,
-                paramaters_labels,
+                parameters_list,
+                parameters_labels,
             )
 
         # properties of send data custom resource
@@ -621,10 +621,10 @@ class MLOpsStack(core.Stack):
                 "ParameterGroups": [
                     {
                         "Label": {"default": "MLOps Framework Settings"},
-                        "Parameters": paramaters_list,
+                        "Parameters": parameters_list,
                     }
                 ],
-                "ParameterLabels": paramaters_labels,
+                "ParameterLabels": parameters_labels,
             }
         }
         # Outputs #

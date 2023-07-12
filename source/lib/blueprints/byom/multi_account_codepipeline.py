@@ -30,7 +30,7 @@ from lib.blueprints.byom.pipeline_definitions.helpers import (
     suppress_iam_complex,
 )
 from lib.blueprints.byom.pipeline_definitions.templates_parameters import (
-    ParameteresFactory as pf,
+    ParametersFactory as pf,
     ConditionsFactory as cf,
 )
 
@@ -39,7 +39,7 @@ class MultiAccountCodePipelineStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Parameteres #
+        # Parameters #
         template_zip_name = pf.create_template_zip_name_parameter(self)
         template_file_name = pf.create_template_file_name_parameter(self)
         dev_params_file_name = pf.create_stage_params_file_name_parameter(self, "DevParamsName", "development")
@@ -161,7 +161,7 @@ class MultiAccountCodePipelineStack(core.Stack):
             resources=[dev_deploy_lambda_arn, staging_deploy_lambda_arn, prod_deploy_lambda_arn],
         )
 
-        # createing pipeline stages
+        # creating pipeline stages
         source_stage = codepipeline.StageProps(stage_name="Source", actions=[source_action_definition])
 
         deploy_dev_stage = codepipeline.StageProps(
@@ -279,12 +279,12 @@ class MultiAccountCodePipelineStack(core.Stack):
             "CodePipelineActionRole"
         ).node.find_child("DefaultPolicy").node.default_child.cfn_options.metadata = suppress_list_function_policy()
 
-        # add supression for complex policy
+        # add suppression for complex policy
         multi_account_pipeline.node.find_child("Role").node.find_child(
             "DefaultPolicy"
         ).node.default_child.cfn_options.metadata = suppress_iam_complex()
 
-        # add ArtifactBucket cfn supression (not needing a logging bucket)
+        # add ArtifactBucket cfn suppression (not needing a logging bucket)
         multi_account_pipeline.node.find_child(
             "ArtifactsBucket"
         ).node.default_child.cfn_options.metadata = suppress_pipeline_bucket()

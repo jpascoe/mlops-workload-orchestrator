@@ -100,14 +100,10 @@ def batch_transform(
     """
     s3_read = s3_policy_read(
         list(
-            set(
-                [
-                    f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket.bucket_name}",
-                    f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket.bucket_name}/*",
-                    f"arn:{core.Aws.PARTITION}:s3:::{batch_input_bucket}",
-                    f"arn:{core.Aws.PARTITION}:s3:::{batch_inference_data}",
-                ]
-            )
+            {f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket.bucket_name}",
+             f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket.bucket_name}/*",
+             f"arn:{core.Aws.PARTITION}:s3:::{batch_input_bucket}",
+             f"arn:{core.Aws.PARTITION}:s3:::{batch_inference_data}"}
         )
     )
 

@@ -131,7 +131,7 @@ aws s3 cp ./regional-s3-assets/ s3://my-bucket-name-<aws_region>/mlops-workload-
 - Parameter details
 
 ```
-$DIST_OUTPUT_BUCKET - This is the global name of the distribution. For the bucket name, the AWS Region is added to the global name (example: 'my-bucket-name-us-east-1') to create a regional bucket. The lambda artifact should be uploaded to the regional buckets for the CloudFormation template to pick it up for deployment.
+$DIST_OUTPUT_BUCKET - This is the global name of the distribution. For the bucket name, the AWS Region is added to the global name (example: 'my-bucket-name-ap-southeast-2') to create a regional bucket. The lambda artifact should be uploaded to the regional buckets for the CloudFormation template to pick it up for deployment.
 $SOLUTION_NAME - The name of This solution (example: mlops-workload-orchestrator)
 $VERSION - The version number of the change
 ```

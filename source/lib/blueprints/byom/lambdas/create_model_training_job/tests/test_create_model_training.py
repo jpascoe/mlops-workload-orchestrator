@@ -141,7 +141,7 @@ def test_create_training_job(
 def test_handler_training_job(
     mocked_client, mocked_session, mocked_create_estimator, mocked_training_job_env_vars
 ):
-    mocked_client.boto_region_name = "us-east-1"
+    mocked_client.boto_region_name = "ap-southeast-2"
     from main import handler
 
     handler(None, None)

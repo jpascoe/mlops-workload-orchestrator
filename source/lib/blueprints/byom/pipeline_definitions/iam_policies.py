@@ -383,7 +383,7 @@ def ecr_policy_document(scope, id, repo_arn):
             ),
         ],
     )
-    # add supression for *
+    # add suppression for *
     ecr_policy.node.default_child.cfn_options.metadata = suppress_ecr_policy()
 
     return ecr_policy
@@ -511,7 +511,7 @@ def delegated_admin_policy_document(scope, id):
             )
         ],
     )
-    # add supression for *
+    # add suppression for *
     delegated_admin_policy.node.default_child.cfn_options.metadata = suppress_delegated_admin_policy()
 
     return delegated_admin_policy

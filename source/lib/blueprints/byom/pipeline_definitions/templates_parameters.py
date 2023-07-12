@@ -13,7 +13,7 @@
 from aws_cdk import core
 
 
-class ParameteresFactory:
+class ParametersFactory:
     @staticmethod
     def create_notification_email_parameter(scope: core.Construct) -> core.CfnParameter:
         return core.CfnParameter(

@@ -25,7 +25,7 @@ from lib.blueprints.byom.pipeline_definitions.sagemaker_endpoint_config import c
 from lib.blueprints.byom.pipeline_definitions.sagemaker_endpoint import create_sagemaker_endpoint
 from lib.blueprints.byom.pipeline_definitions.helpers import suppress_lambda_policies
 from lib.blueprints.byom.pipeline_definitions.templates_parameters import (
-    ParameteresFactory as pf,
+    ParametersFactory as pf,
     ConditionsFactory as cf,
 )
 
@@ -34,7 +34,7 @@ class BYOMRealtimePipelineStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Parameteres #
+        # Parameters #
         assets_bucket_name = pf.create_assets_bucket_name_parameter(self)
         blueprint_bucket_name = pf.create_blueprint_bucket_name_parameter(self)
         custom_algorithms_ecr_repo_arn = pf.create_custom_algorithms_ecr_repo_arn_parameter(self)
@@ -150,10 +150,10 @@ class BYOMRealtimePipelineStack(core.Stack):
         # add dependency on endpoint config
         sagemaker_endpoint.add_depends_on(sagemaker_endpoint_config)
 
-        # Create Lambda - sagemakerendpoint
+        # Create Lambda - sagemaker endpoint
         LambdaToSagemakerEndpoint(
             self,
-            "LambdaSagmakerEndpoint",
+            "LambdaSagemakerEndpoint",
             existing_sagemaker_endpoint_obj=sagemaker_endpoint,
             existing_lambda_obj=inference_api_gateway.lambda_function,
         )

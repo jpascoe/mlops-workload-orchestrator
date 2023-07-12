@@ -14,7 +14,6 @@ from aws_cdk import (
     aws_iam as iam,
     core,
 )
-from lib.conditional_resource import ConditionalResources
 
 from lib.blueprints.byom.pipeline_definitions.iam_policies import (
     kms_policy_document,
@@ -26,25 +25,26 @@ from lib.blueprints.byom.pipeline_definitions.iam_policies import (
     pass_role_policy_statement,
     get_role_policy_statement,
 )
+from lib.conditional_resource import ConditionalResources
 
 
 def create_sagemaker_monitor_role(
-    scope,  # NOSONAR:S107 this function is designed to take many arguments
-    id,
-    kms_key_arn,
-    assets_bucket_name,
-    data_capture_bucket,
-    data_capture_s3_location,
-    baseline_output_bucket,
-    baseline_job_output_location,
-    output_s3_location,
-    kms_key_arn_provided_condition,
-    baseline_job_name,
-    monitoring_schedule_name,
-    endpoint_name,
-    model_monitor_ground_truth_bucket,
-    model_monitor_ground_truth_input,
-    monitoring_type,
+        scope,  # NOSONAR:S107 this function is designed to take many arguments
+        id,
+        kms_key_arn,
+        assets_bucket_name,
+        data_capture_bucket,
+        data_capture_s3_location,
+        baseline_output_bucket,
+        baseline_job_output_location,
+        output_s3_location,
+        kms_key_arn_provided_condition,
+        baseline_job_name,
+        monitoring_schedule_name,
+        endpoint_name,
+        model_monitor_ground_truth_bucket,
+        model_monitor_ground_truth_input,
+        monitoring_type,
 ):
     # create optional policies
     kms_policy = kms_policy_document(scope, "MLOpsKmsPolicy", kms_key_arn)
@@ -66,16 +66,14 @@ def create_sagemaker_monitor_role(
     logs_metrics_policy = sagemaker_logs_metrics_policy_document(scope, "SagemakerLogsMetricsPolicy")
     # S3 permissions
     s3_read_resources = list(
-        set(  # set is used since a same bucket can be used more than once
-            [
-                f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}",
-                f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}/*",
-                f"arn:{core.Aws.PARTITION}:s3:::{data_capture_bucket}",
-                f"arn:{core.Aws.PARTITION}:s3:::{data_capture_s3_location}/*",
-                f"arn:{core.Aws.PARTITION}:s3:::{baseline_output_bucket}",
-                f"arn:{core.Aws.PARTITION}:s3:::{baseline_job_output_location}/*",
-            ]
-        )
+        {
+            f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}",
+            f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}/*",
+            f"arn:{core.Aws.PARTITION}:s3:::{data_capture_bucket}",
+            f"arn:{core.Aws.PARTITION}:s3:::{data_capture_s3_location}/*",
+            f"arn:{core.Aws.PARTITION}:s3:::{baseline_output_bucket}",
+            f"arn:{core.Aws.PARTITION}:s3:::{baseline_job_output_location}/*"
+        }
     )
 
     # add permissions to read ground truth data (only for ModelQuality monitor)

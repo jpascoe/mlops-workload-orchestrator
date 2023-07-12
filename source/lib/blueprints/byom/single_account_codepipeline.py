@@ -27,14 +27,14 @@ from lib.blueprints.byom.pipeline_definitions.helpers import (
     suppress_iam_complex,
     suppress_cloudformation_action,
 )
-from lib.blueprints.byom.pipeline_definitions.templates_parameters import ParameteresFactory as pf
+from lib.blueprints.byom.pipeline_definitions.templates_parameters import ParametersFactory as pf
 
 
 class SingleAccountCodePipelineStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Parameteres #
+        # Parameters #
         template_zip_name = pf.create_template_zip_name_parameter(self)
         template_file_name = pf.create_template_file_name_parameter(self)
         template_params_file_name = pf.create_stage_params_file_name_parameter(self, "TemplateParamsName", "main")
@@ -104,12 +104,12 @@ class SingleAccountCodePipelineStack(core.Stack):
             )
         )
 
-        # add ArtifactBucket cfn supression (not needing a logging bucket)
+        # add ArtifactBucket cfn suppression (not needing a logging bucket)
         single_account_pipeline.node.find_child(
             "ArtifactsBucket"
         ).node.default_child.cfn_options.metadata = suppress_pipeline_bucket()
 
-        # add supression for complex policy
+        # add suppression for complex policy
         single_account_pipeline.node.find_child("Role").node.find_child(
             "DefaultPolicy"
         ).node.default_child.cfn_options.metadata = suppress_iam_complex()

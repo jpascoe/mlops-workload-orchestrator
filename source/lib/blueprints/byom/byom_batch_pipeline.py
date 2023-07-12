@@ -22,7 +22,7 @@ from lib.blueprints.byom.pipeline_definitions.deploy_actions import (
 from lib.blueprints.byom.pipeline_definitions.sagemaker_role import create_sagemaker_role
 from lib.blueprints.byom.pipeline_definitions.sagemaker_model import create_sagemaker_model
 from lib.blueprints.byom.pipeline_definitions.templates_parameters import (
-    ParameteresFactory as pf,
+    ParametersFactory as pf,
     ConditionsFactory as cf,
 )
 
@@ -31,7 +31,7 @@ class BYOMBatchStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Parameteres #
+        # Parameters #
         blueprint_bucket_name = pf.create_blueprint_bucket_name_parameter(self)
         assets_bucket_name = pf.create_assets_bucket_name_parameter(self)
         custom_algorithms_ecr_repo_arn = pf.create_custom_algorithms_ecr_repo_arn_parameter(self)
@@ -91,10 +91,10 @@ class BYOMBatchStack(core.Stack):
             model_name=model_name.value_as_string,
         )
 
-        # create batch tranform lambda
+        # create batch transform lambda
         batch_transform_lambda = batch_transform(
             self,
-            "BatchTranformLambda",
+            "BatchTransformLambda",
             blueprint_bucket,
             assets_bucket,
             sagemaker_model.attr_model_name,

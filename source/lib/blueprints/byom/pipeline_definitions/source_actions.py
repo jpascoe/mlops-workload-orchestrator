@@ -37,7 +37,7 @@ def source_action_model_monitor(template_zip_file, assets_bucket):
     """
     source_action_model_monitor configures a codepipeline action with S3 as source
 
-    :template_zip_file: path to the template zip file in : assets_bucket containg model monitor template and parameters
+    :template_zip_file: path to the template zip file in : assets_bucket containing model monitor template and parameters
     :assets_bucket: the bucket cdk object where pipeline assets are stored
     :return: codepipeline action in a form of a CDK object that can be attached to a codepipeline stage
     """
@@ -72,7 +72,7 @@ def source_action_template(template_location, assets_bucket):
     """
     source_action_model_monitor configures a codepipeline action with S3 as source
 
-    :template_location: path to the zip file containg the CF template and stages configuration in the S3 bucket: assets_bucket
+    :template_location: path to the zip file containing the CF template and stages configuration in the S3 bucket: assets_bucket
     :assets_bucket: the bucket cdk object where pipeline assets are stored
     :return: codepipeline action in a form of a CDK object that can be attached to a codepipeline stage
     """

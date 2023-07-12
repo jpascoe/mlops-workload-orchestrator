@@ -24,7 +24,7 @@ from lib.blueprints.byom.pipeline_definitions.deploy_actions import (
 )
 
 from lib.blueprints.byom.pipeline_definitions.templates_parameters import (
-    ParameteresFactory as pf,
+    ParametersFactory as pf,
     ConditionsFactory as cf,
 )
 
@@ -34,7 +34,7 @@ class TrainingJobStack(core.Stack):
         super().__init__(scope, id, **kwargs)
 
         self.training_type = training_type
-        # Parameteres #
+        # Parameters #
         self.blueprint_bucket_name = pf.create_blueprint_bucket_name_parameter(self)
         self.assets_bucket_name = pf.create_assets_bucket_name_parameter(self)
         self.job_name = pf.create_autopilot_job_name_parameter(self)

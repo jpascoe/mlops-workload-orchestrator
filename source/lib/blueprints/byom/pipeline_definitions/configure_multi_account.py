@@ -18,7 +18,7 @@ from lib.blueprints.byom.pipeline_definitions.iam_policies import (
     create_ecr_repo_policy,
     model_package_group_policy,
 )
-from lib.blueprints.byom.pipeline_definitions.templates_parameters import ParameteresFactory as pf
+from lib.blueprints.byom.pipeline_definitions.templates_parameters import ParametersFactory as pf
 
 
 def configure_multi_account_parameters_permissions(
@@ -28,8 +28,8 @@ def configure_multi_account_parameters_permissions(
     ecr_repo,
     model_registry,
     orchestrator_lambda_function,
-    paramaters_list,
-    paramaters_labels,
+    parameters_list,
+    parameters_labels,
 ):
     """
     configure_multi_account_parameters_permissions creates parameters and permissions for the multi-account option
@@ -40,10 +40,10 @@ def configure_multi_account_parameters_permissions(
     :ecr_repo: ecr_repo CDK object
     :model_registry: model_registry CDK object
     :orchestrator_lambda_function: orchestrator lambda function CDK object
-    :paramaters_list: list parameters' logical ids
-    :paramaters_labels: dictionary of paramaters labels
+    :parameters_list: list parameters' logical ids
+    :parameters_labels: dictionary of parameters labels
 
-    :return: (paramaters_list, paramaters_labels, send_data_cr_properties)
+    :return: (parameters_list, parameters_labels, send_data_cr_properties)
     """
     # add parameters
     # delegated admin account
@@ -105,7 +105,7 @@ def configure_multi_account_parameters_permissions(
     orchestrator_lambda_function.add_environment(key="PROD_ORG_ID", value=prod_org_id.value_as_string)
 
     # add parameters
-    paramaters_list.extend(
+    parameters_list.extend(
         [
             is_delegated_admin.logical_id,
             dev_account_id.logical_id,
@@ -117,7 +117,7 @@ def configure_multi_account_parameters_permissions(
         ]
     )
     # add labels
-    paramaters_labels.update(
+    parameters_labels.update(
         {
             f"{is_delegated_admin.logical_id}": {
                 "default": "Are you using a delegated administrator account (AWS Organizations)?"
@@ -132,4 +132,4 @@ def configure_multi_account_parameters_permissions(
     )
 
     # return parameters, labels, and is_delegated_admin
-    return (paramaters_list, paramaters_labels, is_delegated_admin.value_as_string)
+    return (parameters_list, parameters_labels, is_delegated_admin.value_as_string)

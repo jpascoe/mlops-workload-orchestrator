@@ -20,7 +20,7 @@ from lib.blueprints.byom.pipeline_definitions.deploy_actions import (
     create_invoke_lambda_custom_resource,
 )
 from lib.blueprints.byom.pipeline_definitions.templates_parameters import (
-    ParameteresFactory as pf,
+    ParametersFactory as pf,
     ConditionsFactory as cf,
 )
 
@@ -45,7 +45,7 @@ class ModelMonitorStack(core.Stack):
         self.baseline_attributes = dict()
         self.monitor_attributes = dict()
 
-        # Parameteres #
+        # Parameters #
         self.monitoring_type = monitoring_type
         self.blueprint_bucket_name = pf.create_blueprint_bucket_name_parameter(self)
         self.assets_bucket_name = pf.create_assets_bucket_name_parameter(self)
@@ -250,12 +250,12 @@ class ModelMonitorStack(core.Stack):
             self, "InferenceAttributeProvided", self.monitor_inference_attribute
         )
 
-        self.binary_classification_propability_attribute_provided = (
+        self.binary_classification_probability_attribute_provided = (
             cf.create_problem_type_binary_classification_attribute_provided_condition(
                 self, self.problem_type, self.monitor_probability_attribute, "ProbabilityAttribute"
             )
         )
-        self.binary_classification_propability_threshold_provided = (
+        self.binary_classification_probability_threshold_provided = (
             cf.create_problem_type_binary_classification_attribute_provided_condition(
                 self, self.problem_type, self.probability_threshold_attribute, "ProbabilityThreshold"
             )
@@ -281,13 +281,13 @@ class ModelMonitorStack(core.Stack):
                 ).to_string(),
                 # pass probability_attribute if provided and ProblemType is BinaryClassification
                 probability_attribute=core.Fn.condition_if(
-                    self.binary_classification_propability_attribute_provided.logical_id,
+                    self.binary_classification_probability_attribute_provided.logical_id,
                     self.monitor_probability_attribute.value_as_string,
                     core.Aws.NO_VALUE,
                 ).to_string(),
                 # pass probability_threshold_attribute if provided and ProblemType is BinaryClassification
                 probability_threshold_attribute=core.Fn.condition_if(
-                    self.binary_classification_propability_threshold_provided.logical_id,
+                    self.binary_classification_probability_threshold_provided.logical_id,
                     self.probability_threshold_attribute.value_as_string,
                     core.Aws.NO_VALUE,
                 ).to_string(),
@@ -295,8 +295,8 @@ class ModelMonitorStack(core.Stack):
         )
 
     def _add_model_bias_explainability_extra_attributes(self):
-        # create paramaters/conditions
-        # create bias specific paramaters
+        # create parameters/conditions
+        # create bias specific parameters
         if self.monitoring_type == "ModelBias":
             self.base_config = pf.create_bias_config_parameter(self)
             self.model_predicted_label_config = pf.create_model_predicted_label_config_parameter(self)

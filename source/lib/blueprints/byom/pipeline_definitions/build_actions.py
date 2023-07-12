@@ -92,7 +92,7 @@ def build_action(scope, ecr_repository_name, image_tag, source_output):
             }
         ),
         environment=codebuild.BuildEnvironment(
-            build_image=codebuild.LinuxBuildImage.STANDARD_4_0,
+            build_image=codebuild.LinuxBuildImage.STANDARD_5_0,
             compute_type=codebuild.ComputeType.SMALL,
             environment_variables={
                 "AWS_DEFAULT_REGION": {"value": core.Aws.REGION},

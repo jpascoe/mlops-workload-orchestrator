@@ -26,14 +26,14 @@ from lib.blueprints.byom.pipeline_definitions.helpers import (
     suppress_pipeline_bucket,
     suppress_iam_complex,
 )
-from lib.blueprints.byom.pipeline_definitions.templates_parameters import ParameteresFactory as pf
+from lib.blueprints.byom.pipeline_definitions.templates_parameters import ParametersFactory as pf
 
 
 class BYOMCustomAlgorithmImageBuilderStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Parameteres #
+        # Parameters #
         assets_bucket_name = pf.create_assets_bucket_name_parameter(self)
         custom_container = pf.create_custom_container_parameter(self)
         ecr_repo_name = pf.create_ecr_repo_name_parameter(self)
@@ -57,7 +57,7 @@ class BYOMCustomAlgorithmImageBuilderStack(core.Stack):
             self, "ImageBuilderPipelineNotification", mlops_sns_topic_arn.value_as_string
         )
 
-        # createing pipeline stages
+        # creating pipeline stages
         source_stage = codepipeline.StageProps(stage_name="Source", actions=[source_action_definition])
         build_stage = codepipeline.StageProps(stage_name="Build", actions=[build_action_definition])
 
@@ -91,12 +91,12 @@ class BYOMCustomAlgorithmImageBuilderStack(core.Stack):
             )
         )
 
-        # add ArtifactBucket cfn supression (not needing a logging bucket)
+        # add ArtifactBucket cfn suppression (not needing a logging bucket)
         image_builder_pipeline.node.find_child(
             "ArtifactsBucket"
         ).node.default_child.cfn_options.metadata = suppress_pipeline_bucket()
 
-        # add supression for complex policy
+        # add suppression for complex policy
         image_builder_pipeline.node.find_child("Role").node.find_child(
             "DefaultPolicy"
         ).node.default_child.cfn_options.metadata = suppress_iam_complex()

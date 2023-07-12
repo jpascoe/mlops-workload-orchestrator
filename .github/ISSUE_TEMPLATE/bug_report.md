@@ -21,7 +21,7 @@ A clear and concise description of what you expected to happen.
 
 To get the version of the solution, you can look at the description of the created CloudFormation stack. For example, "(SO0136) - AWS MLOps Framework. Version v1.0.0".
 
-- [ ] Region: [e.g. us-east-1]
+- [ ] Region: [e.g. ap-southeast-2]
 - [ ] Was the solution modified from the version published on this repository?
 - [ ] If the answer to the previous question was yes, are the changes available on GitHub?
 - [ ] Have you checked your [service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html) for the sevices this solution uses?

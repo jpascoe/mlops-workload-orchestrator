@@ -14,13 +14,11 @@ from aws_cdk import (
     aws_iam as iam,
     core,
 )
-from lib.conditional_resource import ConditionalResources
 
 from lib.blueprints.byom.pipeline_definitions.iam_policies import (
     ecr_policy_document,
     kms_policy_document,
     sagemaker_policy_statement,
-    sagemaker_monitor_policy_statement,
     sagemaker_tags_policy_statement,
     sagemaker_logs_metrics_policy_document,
     s3_policy_read,
@@ -29,24 +27,25 @@ from lib.blueprints.byom.pipeline_definitions.iam_policies import (
     get_role_policy_statement,
     model_registry_policy_document,
 )
+from lib.conditional_resource import ConditionalResources
 
 
 def create_sagemaker_role(
-    scope,  # NOSONAR:S107 this function is designed to take many arguments
-    id,
-    custom_algorithms_ecr_arn,
-    kms_key_arn,
-    model_package_group_name,
-    assets_bucket_name,
-    input_bucket_name,
-    input_s3_location,
-    output_s3_location,
-    ecr_repo_arn_provided_condition,
-    kms_key_arn_provided_condition,
-    model_registry_provided_condition,
-    is_realtime_pipeline=False,
-    endpoint_name=None,
-    endpoint_name_provided=None,
+        scope,  # NOSONAR:S107 this function is designed to take many arguments
+        id,
+        custom_algorithms_ecr_arn,
+        kms_key_arn,
+        model_package_group_name,
+        assets_bucket_name,
+        input_bucket_name,
+        input_s3_location,
+        output_s3_location,
+        ecr_repo_arn_provided_condition,
+        kms_key_arn_provided_condition,
+        model_registry_provided_condition,
+        is_realtime_pipeline=False,
+        endpoint_name=None,
+        endpoint_name_provided=None,
 ):
     # create optional policies
     ecr_policy = ecr_policy_document(scope, "MLOpsECRPolicy", custom_algorithms_ecr_arn)
@@ -71,14 +70,12 @@ def create_sagemaker_role(
     # S3 permissions
     s3_read = s3_policy_read(
         list(
-            set(
-                [
-                    f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}",
-                    f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}/*",
-                    f"arn:{core.Aws.PARTITION}:s3:::{input_bucket_name}",
-                    f"arn:{core.Aws.PARTITION}:s3:::{input_s3_location}",
-                ]
-            )
+            {
+                f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}",
+                f"arn:{core.Aws.PARTITION}:s3:::{assets_bucket_name}/*",
+                f"arn:{core.Aws.PARTITION}:s3:::{input_bucket_name}",
+                f"arn:{core.Aws.PARTITION}:s3:::{input_s3_location}"
+            }
         )
     )
     s3_write = s3_policy_write(

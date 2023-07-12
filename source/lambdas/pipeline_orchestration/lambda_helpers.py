@@ -196,7 +196,7 @@ def get_template_parameters(event: Dict[str, Any], is_multi_account: bool, stage
         else None,
     }
 
-    # get the pipeline's paramaters
+    # get the pipeline's parameters
     pipeline_params = pipelines_params.get(pipeline_type)
 
     # return the params if not NOne, otherwise throw a BadRequest exception
@@ -465,7 +465,7 @@ def get_model_training_specifc_params(event: Dict[str, Any], job_name: str) -> L
         ("DataInputMode", event.get("data_input_mode", "File")),
         ("DataRecordWrapping", event.get("data_record_wrapping", "")),
         ("AttributeNames", event.get("attribute_names", "")),
-        ("AlgoHyperparameteres", json.dumps(event.get("algo_hyperparamaters"))),
+        ("AlgoHyperparameteres", json.dumps(event.get("algo_hyperparameters"))),
     ]
 
 
@@ -474,7 +474,7 @@ def get_model_tuner_specifc_params(event: Dict[str, Any], job_name: str) -> List
     return [
         *get_model_training_specifc_params(event, job_name),
         ("HyperparametersTunerConfig", json.dumps(event.get("tuner_configs"))),
-        ("AlgoHyperparameteresRange", json.dumps(event.get("hyperparamaters_ranges"))),
+        ("AlgoHyperparameteresRange", json.dumps(event.get("hyperparameters_ranges"))),
     ]
 
 
@@ -593,9 +593,9 @@ def get_required_keys(pipeline_type: str, use_model_registry: str, problem_type:
         *common_keys[:2],
         *common_training_keys,
         *builtin_model_keys[:2],
-        "algo_hyperparamaters",
+        "algo_hyperparameters",
     ]
-    model_tuner_keys = [*model_training_keys, "tuner_configs", "hyperparamaters_ranges"]
+    model_tuner_keys = [*model_training_keys, "tuner_configs", "hyperparameters_ranges"]
     autopilot_keys = [*common_keys[:2], *common_training_keys, "target_attribute"]
     # if model registry is used
     if use_model_registry == "Yes":

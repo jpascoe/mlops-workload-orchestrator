@@ -59,7 +59,7 @@ def get_template(s3_client, artifact, template_file_in_zip, params_file_in_zip):
         params_file_in_zip: The path to the file within the zip containing the template parameters
 
     Returns:
-        The (CloudFormation template as a string, template paramaters as json)
+        The (CloudFormation template as a string, template parameters as json)
 
     Raises:
         Exception: Any exception thrown while downloading the artifact or unzipping it

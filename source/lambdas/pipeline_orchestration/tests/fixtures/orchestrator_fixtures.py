@@ -203,7 +203,7 @@ def api_training_event():
             "training_data": "train/data.csv",
             "target_attribute": "target",
             "job_output_location": "training-output",
-            "algo_hyperparamaters": dict(eval_metric="auc", objective="binary:logistic", num_round=400, rate_drop=0.3),
+            "algo_hyperparameters": dict(eval_metric="auc", objective="binary:logistic", num_round=400, rate_drop=0.3),
             "tuner_configs": dict(
                 early_stopping_type="Auto",
                 objective_metric_name="validation:auc",
@@ -212,7 +212,7 @@ def api_training_event():
                 max_jobs=10,
                 max_parallel_jobs=2,
             ),
-            "hyperparamaters_ranges": dict(
+            "hyperparameters_ranges": dict(
                 eta=["continuous", [0.1, 0.5]],
                 gamma=["continuous", [0, 5]],
                 min_child_weight=["continuous", [0, 120]],
