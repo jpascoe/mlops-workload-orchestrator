@@ -318,7 +318,7 @@ def test_get_baseline_dataset_header(mocked_baseline_dataset_header):
         patched_client().get_object.return_value = {"Body": body}
         # get the confog file
         returned_config_file = SolutionSageMakerBaselines.get_baseline_dataset_header(
-            bucket_name="test-bucket", file_key="dataset.csv", s3_client=s3_client
+            bucket_name="fmgl-test-bucket", file_key="dataset.csv", s3_client=s3_client
         )
         # assert the returned config file equals the expected content
         TestCase().assertListEqual(returned_config_file, mocked_baseline_dataset_header)

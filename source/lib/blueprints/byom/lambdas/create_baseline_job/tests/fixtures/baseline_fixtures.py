@@ -119,7 +119,7 @@ def mock_model_explainability_env_with_optional_vars(mock_data_quality_env_with_
 
 @pytest.fixture
 def mocked_data_config():
-    return DataConfig(s3_data_input_path="s3://test-bucket/data.csv", s3_output_path="s3://test-bucket/baseline_output")
+    return DataConfig(s3_data_input_path="s3://fmgl-test-bucket/data.csv", s3_output_path="s3://test-bucket/baseline_output")
 
 
 @pytest.fixture

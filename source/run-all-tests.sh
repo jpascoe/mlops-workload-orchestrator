@@ -122,7 +122,7 @@ run_framework_lambda_test() {
     echo "$current_dir"
     function_name=${PWD##*/}
     pip install -r requirements-test.txt
-#    run_python_test $(basename $folder)
+    run_python_test $(basename $folder)
     rm -rf *.egg-info
     cd ..
   done
@@ -141,11 +141,13 @@ run_blueprint_lambda_test() {
     cd "$source_dir/lib/blueprints/byom/lambdas/$folder"
     current_dir=$PWD
     echo "$current_dir"
-    if [ "$folder" != "sagemaker_layer/" and "$folder" != "__pycache__/" ]; then
-      pip install -r requirements-test.txt
-#      run_python_test $(basename $folder)
-      rm -rf *.egg-info
-      cd ..
+    if [ "$folder" != "sagemaker_layer/" ]; then
+      if [ "$folder" != "__pycache__/" ]; then
+        pip install -r requirements-test.txt
+        run_python_test $(basename $folder)
+        rm -rf *.egg-info
+        cd ..
+      fi
     fi
   done
 }

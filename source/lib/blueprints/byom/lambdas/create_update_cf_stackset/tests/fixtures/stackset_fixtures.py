@@ -100,7 +100,7 @@ def mocked_codepipeline_event(mocked_decoded_parameters):
                     {
                         "location": {
                             "s3Location": {
-                                "bucketName": "test-bucket",
+                                "bucketName": "fmgl-test-bucket",
                                 "objectKey": "template.zip",
                             },
                             "type": "S3",

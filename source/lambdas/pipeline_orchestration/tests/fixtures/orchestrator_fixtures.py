@@ -147,7 +147,7 @@ def api_model_quality_event(api_data_quality_event):
             "problem_type": "Regression",
             "baseline_ground_truth_attribute": "label",
             "monitor_inference_attribute": "0",
-            "monitor_ground_truth_input": "s3://test-bucket/groundtruth",
+            "monitor_ground_truth_input": "s3://fmgl-test-bucket/groundtruth",
         }
     )
     return model_quality_event
@@ -281,8 +281,8 @@ def expected_model_quality_monitor_params(expected_data_quality_monitor_params):
             ("MonitorInferenceAttribute", "0"),
             ("MonitorProbabilityAttribute", "0"),
             ("ProbabilityThresholdAttribute", "0.5"),
-            ("GroundTruthBucket", "test-bucket"),
-            ("MonitorGroundTruthInput", "s3://test-bucket/groundtruth"),
+            ("GroundTruthBucket", "fmgl-test-bucket"),
+            ("MonitorGroundTruthInput", "s3://fmgl-test-bucket/groundtruth"),
         ]
     )
 

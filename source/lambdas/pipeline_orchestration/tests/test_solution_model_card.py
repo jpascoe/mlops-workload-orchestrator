@@ -41,7 +41,7 @@ class TestSolutionModelCardHelpers(unittest.TestCase):
         # training job details
         self.training_job_details = dict(
             training_arn="training-job-arn",
-            training_datasets=["s3://test-bucket/data/csv"],
+            training_datasets=["s3://fmgl-test-bucket/data/csv"],
             training_environment=self.container_image,
         )
 
@@ -278,7 +278,7 @@ class TestSolutionModelCardAPIs(unittest.TestCase):
             created_by="DS",
             model_overview=dict(model_description="model-description", unexpected="random-value"),
         )
-        self.s3_url = "s3://test-bucket"
+        self.s3_url = "s3://fmgl-test-bucket"
         self.message = "model card has been deleted"
         self.api_response = {
             "statusCode": 200,
