@@ -60,7 +60,7 @@ def lambda_handler(event, _):
         # "template_file":"realtime-inference-pipeline.yaml",
         # "stage_params_file":"staging-config.json",
         # "account_ids":["<account_id>"], "org_ids":["<org_unit_id>"],
-        # "regions":["us-east-1"]}
+        # "regions":["ap-southeast-2"]}
         params = get_user_params(job_data)
 
         # Get the list of artifacts passed to the function

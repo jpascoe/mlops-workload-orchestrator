@@ -22,7 +22,7 @@ from model_training_helper import SolutionModelTraining
 @pytest.fixture()
 def mocked_common_env_vars():
     common_env_vars = {
-        "ASSETS_BUCKET": "testbucket",
+        "ASSETS_BUCKET": "fmgl-test-assetsbucket",
         "JOB_NAME": "test-training-job",
         "ROLE_ARN": "test-role",
         "JOB_OUTPUT_LOCATION": "job_output",
@@ -93,7 +93,7 @@ def mocked_hyperparameters(mocked_training_job_env_vars):
 
 @pytest.fixture()
 def mocked_sagemaker_session():
-    region = "us-east-1"
+    region = "ap-southeast-2"
     boto_mock = Mock(name="boto_session", region_name=region)
     sms = Mock(
         name="sagemaker_session",

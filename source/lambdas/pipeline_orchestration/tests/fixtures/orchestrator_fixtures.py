@@ -20,12 +20,12 @@ import json
 def mock_env_variables():
     os.environ["BLUEPRINT_BUCKET_URL"] = "testurl"
     os.environ["NOTIFICATION_EMAIL"] = "test@example.com"
-    os.environ["ASSETS_BUCKET"] = "testassetsbucket"
-    os.environ["BLUEPRINT_BUCKET"] = "testbucket"
+    os.environ["ASSETS_BUCKET"] = "fmgl-test-assetsbucket"
+    os.environ["BLUEPRINT_BUCKET"] = "fmgl-test-blueprintbucket"
     os.environ["PIPELINE_STACK_NAME"] = "mlops-pipeline"
     os.environ["CFN_ROLE_ARN"] = "arn:aws:role:region:account:action"
     os.environ["IS_MULTI_ACCOUNT"] = "False"
-    os.environ["REGION"] = "us-east-1"
+    os.environ["REGION"] = "ap-southeast-2"
     os.environ["ECR_REPO_ARN"] = "test-ecr-repo"
     os.environ["DEV_ACCOUNT_ID"] = "dev_account_id"
     os.environ["STAGING_ACCOUNT_ID"] = "staging_account_id"
@@ -39,7 +39,7 @@ def mock_env_variables():
     os.environ["BATCHOUTPUT"] = "bucket/output"
     os.environ["DATACAPTURE"] = "bucket/datacapture"
     os.environ["TRAININGDATA"] = "model_monitor/training-dataset-with-header.csv"
-    os.environ["BASELINEOUTPUT"] = "testbucket/model_monitor/baseline_output2"
+    os.environ["BASELINEOUTPUT"] = "fmgl-test-blueprintbucket/model_monitor/baseline_output2"
     os.environ["SCHEDULEEXP"] = "cron(0 * ? * * *)"
     os.environ["CUSTOMIMAGE"] = "custom/custom_image.zip"
     os.environ["TESTFILE"] = "testfile.zip"
@@ -93,13 +93,10 @@ def api_byom_event():
                 "False": "test-endpoint",
             },
         )
-        event = {
-            "pipeline_type": pipeline_type,
-            "model_name": "testmodel",
-            "model_artifact_location": os.environ["MODELARTIFACTLOCATION"],
-            "model_package_name": os.environ["MODEL_PACKAGE_NAME"],
-        }
-        event["inference_instance"] = maping["inference_instance"][str(is_multi)]
+        event = {"pipeline_type": pipeline_type, "model_name": "testmodel",
+                 "model_artifact_location": os.environ["MODELARTIFACTLOCATION"],
+                 "model_package_name": os.environ["MODEL_PACKAGE_NAME"],
+                 "inference_instance": maping["inference_instance"][str(is_multi)]}
 
         if pipeline_type in ["byom_batch_builtin", "byom_batch_custom"]:
             event["batch_inference_data"] = os.environ["INFERENCEDATA"]
@@ -130,8 +127,8 @@ def api_data_quality_event():
         "endpoint_name": "test_endpoint",
         "baseline_data": os.environ["TRAININGDATA"],
         "baseline_job_output_location": os.environ["BASELINEOUTPUT"],
-        "monitoring_output_location": "testbucket/model_monitor/monitor_output",
-        "data_capture_location": "testbucket/xgboost/datacapture",
+        "monitoring_output_location": "fmgl-test-blueprintbucket/model_monitor/monitor_output",
+        "data_capture_location": "fmgl-test-blueprintbucket/xgboost/datacapture",
         "schedule_expression": os.environ["SCHEDULEEXP"],
         "instance_type": os.environ["INSTANCETYPE"],
         "instance_volume_size": "20",
@@ -231,9 +228,9 @@ def expected_params_realtime_custom():
     def _expected_params_realtime_custom(endpoint_name_provided=False):
         endpoint_name = "test-endpoint" if endpoint_name_provided else ""
         expected_params = [
-            ("AssetsBucket", "testassetsbucket"),
+            ("AssetsBucket", "fmgl-test-assetsbucket"),
             ("KmsKeyArn", ""),
-            ("BlueprintBucket", "testbucket"),
+            ("BlueprintBucket", "fmgl-test-blueprintbucket"),
             ("ModelName", "testmodel"),
             ("ModelArtifactLocation", os.environ["MODELARTIFACTLOCATION"]),
             ("InferenceInstance", os.environ["INSTANCETYPE"]),
@@ -254,9 +251,9 @@ def expected_params_realtime_custom():
 def expected_data_quality_monitor_params():
     return [
         ("BaselineJobName", "test_endpoint-baseline-job-ec3a"),
-        ("BaselineOutputBucket", "testbucket"),
+        ("BaselineOutputBucket", "fmgl-test-blueprintbucket"),
         ("BaselineJobOutputLocation", os.environ["BASELINEOUTPUT"]),
-        ("DataCaptureBucket", "testbucket"),
+        ("DataCaptureBucket", "fmgl-test-blueprintbucket"),
         ("DataCaptureLocation", os.environ["BASELINEOUTPUT"]),
         ("EndpointName", "test_endpoint"),
         ("ImageUri", "156813124566.dkr.ecr.us-east-1.amazonaws.com/sagemaker-model-monitor-analyzer"),
@@ -264,7 +261,7 @@ def expected_data_quality_monitor_params():
         ("InstanceVolumeSize", "20"),
         ("BaselineMaxRuntimeSeconds", "3600"),
         ("MonitorMaxRuntimeSeconds", "1800"),
-        ("MonitoringOutputLocation", "testbucket/model_monitor/monitor_output"),
+        ("MonitoringOutputLocation", "fmgl-test-blueprintbucket/model_monitor/monitor_output"),
         ("MonitoringScheduleName", "test_endpoint-monitor-2a87"),
         ("ScheduleExpression", os.environ["SCHEDULEEXP"]),
         ("BaselineData", os.environ["TRAININGDATA"]),
@@ -295,7 +292,7 @@ def expected_model_quality_monitor_params(expected_data_quality_monitor_params):
 @pytest.fixture
 def expected_model_explainability_monitor_params(expected_model_quality_monitor_params):
     expected_model_expainability = expected_model_quality_monitor_params[3:-2].copy()
-    # add ModelExpainability params
+    # add ModelExplainability params
     expected_model_expainability.extend(
         [
             ("SHAPConfig", json.dumps(os.getenv("SHAP_CONFIG", {}))),
@@ -339,7 +336,7 @@ def expected_common_realtime_batch_params():
 def expected_image_builder_params():
     return [
         ("NotificationsSNSTopicArn", os.environ["MLOPS_NOTIFICATIONS_SNS_TOPIC"]),
-        ("AssetsBucket", "testassetsbucket"),
+        ("AssetsBucket", "fmgl-test-assetsbucket"),
         ("CustomImage", os.environ["CUSTOMIMAGE"]),
         ("ECRRepoName", "mlops-ecrrep"),
         ("ImageTag", "tree"),
@@ -360,7 +357,7 @@ def expect_single_account_params_format():
     return {
         "Parameters": {
             "NotificationsSNSTopicArn": os.environ["MLOPS_NOTIFICATIONS_SNS_TOPIC"],
-            "AssetsBucket": "testassetsbucket",
+            "AssetsBucket": "fmgl-test-assetsbucket",
             "CustomImage": os.environ["CUSTOMIMAGE"],
             "ECRRepoName": "mlops-ecrrep",
             "ImageTag": "tree",
@@ -382,7 +379,7 @@ def stack_id():
 def expected_multi_account_params_format():
     return [
         {"ParameterKey": "NotificationsSNSTopicArn", "ParameterValue": os.environ["MLOPS_NOTIFICATIONS_SNS_TOPIC"]},
-        {"ParameterKey": "AssetsBucket", "ParameterValue": "testassetsbucket"},
+        {"ParameterKey": "AssetsBucket", "ParameterValue": "fmgl-test-assetsbucket"},
         {"ParameterKey": "CustomImage", "ParameterValue": os.environ["CUSTOMIMAGE"]},
         {"ParameterKey": "ECRRepoName", "ParameterValue": "mlops-ecrrep"},
         {"ParameterKey": "ImageTag", "ParameterValue": "tree"},
@@ -401,9 +398,9 @@ def expected_batch_specific_params():
 @pytest.fixture
 def expected_batch_params():
     return [
-        ("AssetsBucket", "testassetsbucket"),
+        ("AssetsBucket", "fmgl-test-assetsbucket"),
         ("KmsKeyArn", ""),
-        ("BlueprintBucket", "testbucket"),
+        ("BlueprintBucket", "fmgl-test-blueprintbucket"),
         ("ModelName", "testmodel"),
         ("ModelArtifactLocation", os.environ["MODELARTIFACTLOCATION"]),
         ("InferenceInstance", os.environ["INSTANCETYPE"]),

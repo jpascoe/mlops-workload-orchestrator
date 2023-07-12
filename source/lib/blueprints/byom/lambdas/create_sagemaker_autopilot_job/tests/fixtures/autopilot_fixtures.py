@@ -19,7 +19,7 @@ from unittest.mock import Mock
 @pytest.fixture()
 def mocked_autopilot_env_vars(monkeypatch):
     autopilot_env_vars = {
-        "ASSETS_BUCKET": "testbucket",
+        "ASSETS_BUCKET": "fmgl-test-assetbucket",
         "JOB_NAME": "test-training-job",
         "ROLE_ARN": "test-role",
         "JOB_OUTPUT_LOCATION": "job_output",

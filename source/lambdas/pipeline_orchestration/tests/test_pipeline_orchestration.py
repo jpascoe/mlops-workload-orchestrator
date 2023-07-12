@@ -237,32 +237,36 @@ def test_provision_pipeline(api_image_builder_event, api_byom_event):
             response = provision_pipeline(event, client)
             assert response == expected_response
             event = api_byom_event("byom_realtime_builtin")
-            s3_client = boto3.client("s3", region_name="us-east-1")
+            s3_client = boto3.client("s3", region_name="ap-southeast-2")
             testfile = tempfile.NamedTemporaryFile()
-            s3_client.create_bucket(Bucket="testbucket")
+            s3_client.create_bucket(Bucket="fmgl-test-blueprintbucket",
+                                    CreateBucketConfiguration={'LocationConstraint': os.environ["AWS_REGION"]})
             upload_file_to_s3(
-                testfile.name, "testbucket", "blueprints/byom/byom_realtime_inference_pipeline.yaml", s3_client
+                testfile.name, "fmgl-test-blueprintbucket", "blueprints/byom/byom_realtime_inference_pipeline.yaml", s3_client
             )
-            s3_client.create_bucket(Bucket="testassetsbucket")
+            s3_client.create_bucket(Bucket="fmgl-test-assetsbucket",
+                                    CreateBucketConfiguration={'LocationConstraint': os.environ["AWS_REGION"]})
             response = provision_pipeline(event, client, s3_client)
             assert response == expected_response
 
 
 @mock_s3
 def test_upload_file_to_s3():
-    s3_client = boto3.client("s3", region_name="us-east-1")
+    s3_client = boto3.client("s3", region_name="ap-southeast-2")
     testfile = tempfile.NamedTemporaryFile()
-    s3_client.create_bucket(Bucket="assetsbucket")
-    upload_file_to_s3(testfile.name, "assetsbucket", os.environ["TESTFILE"], s3_client)
+    s3_client.create_bucket(Bucket="fmgl-test-assetsbucket",
+                            CreateBucketConfiguration={'LocationConstraint': os.environ["AWS_REGION"]})
+    upload_file_to_s3(testfile.name, "fmgl-test-assetsbucket", os.environ["TESTFILE"], s3_client)
 
 
 @mock_s3
 def test_download_file_from_s3():
-    s3_client = boto3.client("s3", region_name="us-east-1")
+    s3_client = boto3.client("s3", region_name="ap-southeast-2")
     testfile = tempfile.NamedTemporaryFile()
-    s3_client.create_bucket(Bucket="assetsbucket")
-    upload_file_to_s3(testfile.name, "assetsbucket", os.environ["TESTFILE"], s3_client)
-    download_file_from_s3("assetsbucket", os.environ["TESTFILE"], testfile.name, s3_client)
+    s3_client.create_bucket(Bucket="fmgl-test-assetsbucket",
+                            CreateBucketConfiguration={'LocationConstraint': os.environ["AWS_REGION"]})
+    upload_file_to_s3(testfile.name, "fmgl-test-assetsbucket", os.environ["TESTFILE"], s3_client)
+    download_file_from_s3("fmgl-test-assetsbucket", os.environ["TESTFILE"], testfile.name, s3_client)
 
 
 def test_create_codepipeline_stack(cf_client_params, stack_name, stack_id, expected_update_response):
@@ -682,7 +686,7 @@ def test_get_template_parameters(
     )
 
     # additional params used by Model Monitor asserts
-    common_params = [("AssetsBucket", "testassetsbucket"), ("KmsKeyArn", ""), ("BlueprintBucket", "testbucket")]
+    common_params = [("AssetsBucket", "fmgl-test-assetsbucket"), ("KmsKeyArn", ""), ("BlueprintBucket", "fmgl-test-blueprintbucket")]
     # data quality pipeline
     assert len(get_template_parameters(api_data_quality_event, False)) == len(
         [
@@ -739,7 +743,7 @@ def test_get_common_realtime_batch_params(api_byom_event, expected_common_realti
     batch_event = api_byom_event("byom_batch_custom", False)
     realtime_event.update(batch_event)
     TestCase().assertEqual(
-        get_common_realtime_batch_params(realtime_event, "us-east-1", "None"), expected_common_realtime_batch_params
+        get_common_realtime_batch_params(realtime_event, "ap-southeast-2", "None"), expected_common_realtime_batch_params
     )
 
 
@@ -768,15 +772,15 @@ def test_get_built_in_model_monitor_container_uri():
     # has validation for the inputs
     # assert the returned value by an actual Model Monitor Image URI for the region.
     assert (
-        get_built_in_model_monitor_image_uri("us-east-1", "model-monitor")
-        == "156813124566.dkr.ecr.us-east-1.amazonaws.com/sagemaker-model-monitor-analyzer"
+            get_built_in_model_monitor_image_uri("us-east-1", "model-monitor")
+            == "156813124566.dkr.ecr.us-east-1.amazonaws.com/sagemaker-model-monitor-analyzer"
     )
     # The 205585389593 is one of the actual account ids for a public Clarify image provided
     # by the SageMaker service.
     # assert the returned value by an actual clarify Image URI for the region.
     assert (
-        get_built_in_model_monitor_image_uri("us-east-1", "clarify")
-        == "205585389593.dkr.ecr.us-east-1.amazonaws.com/sagemaker-clarify-processing:1.0"
+            get_built_in_model_monitor_image_uri("us-east-1", "clarify")
+            == "205585389593.dkr.ecr.us-east-1.amazonaws.com/sagemaker-clarify-processing:1.0"
     )
 
 
@@ -822,18 +826,18 @@ def test_format_template_parameters(
 @patch("lambda_helpers.sagemaker.image_uris.retrieve")
 def test_get_image_uri(mocked_sm, api_byom_event):
     custom_event = api_byom_event("byom_realtime_custom", False)
-    TestCase().assertEqual(get_image_uri("byom_realtime_custom", custom_event, "us-east-1"), "custom-image-uri")
+    TestCase().assertEqual(get_image_uri("byom_realtime_custom", custom_event, "ap-southeast-2"), "custom-image-uri")
     mocked_sm.return_value = "test-image-uri"
     builtin_event = api_byom_event("byom_realtime_builtin", False)
-    TestCase().assertEqual(get_image_uri("byom_realtime_builtin", builtin_event, "us-east-1"), "test-image-uri")
+    TestCase().assertEqual(get_image_uri("byom_realtime_builtin", builtin_event, "ap-southeast-2"), "test-image-uri")
     mocked_sm.assert_called_with(
         framework=builtin_event.get("model_framework"),
-        region="us-east-1",
+        region="ap-southeast-2",
         version=builtin_event.get("model_framework_version"),
     )
     # assert exception for an unsupported pipeline
     with pytest.raises(Exception) as exc:
-        get_image_uri("not_spoorted_pipeline", builtin_event, "us-east-1")
+        get_image_uri("unsupported_pipeline", builtin_event, "ap-southeast-2")
     assert str(exc.value) == "Unsupported pipeline by get_image_uri function"
 
 
@@ -857,7 +861,7 @@ def test_create_template_zip_file(
     api_image_builder_event,
 ):
     mocked_path.return_value = False
-    s3_client = boto3.client("s3", region_name="us-east-1")
+    s3_client = boto3.client("s3", region_name="ap-southeast-2")
     # multi account
     create_template_zip_file(
         api_image_builder_event, "blueprint", "assets_bucket", "byom/template.yaml", "zipfile", "True", s3_client
@@ -873,7 +877,7 @@ def test_get_codepipeline_params():
         ("NotificationsSNSTopicArn", os.environ["MLOPS_NOTIFICATIONS_SNS_TOPIC"]),
         ("TemplateZipFileName", "template_zip_name"),
         ("TemplateFileName", "template_file_name"),
-        ("AssetsBucket", "testassetsbucket"),
+        ("AssetsBucket", "fmgl-test-assetsbucket"),
         ("StackName", "stack_name"),
     ]
     # multi account codepipeline
@@ -892,7 +896,7 @@ def test_get_codepipeline_params():
             ("StagingOrgId", "staging_org_id"),
             ("ProdAccountId", "prod_account_id"),
             ("ProdOrgId", "prod_org_id"),
-            ("BlueprintBucket", "testbucket"),
+            ("BlueprintBucket", "fmgl-test-blueprintbucket"),
             ("DelegatedAdminAccount", "No"),
         ],
     )

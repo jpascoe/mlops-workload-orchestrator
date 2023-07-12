@@ -176,14 +176,14 @@ class LambdaTest(unittest.TestCase):
             "Resource": "AnonymousMetric",
             "SolutionId": "SO1234",
             "UUID": "some-uuid",
-            "Region": "us-east-1",
+            "Region": "ap-southeast-2",
             "gitSelected": "True",
             "bucketSelected": "False",
             "Foo": "Bar",
         }
 
         expected_response = {
-            "Region": "us-east-1",
+            "Region": "ap-southeast-2",
             "gitSelected": "True",
             "bucketSelected": "False",
         }

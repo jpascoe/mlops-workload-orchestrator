@@ -22,4 +22,4 @@ def aws_credentials():
     """Mocked AWS Credentials"""
     os.environ["AWS_ACCESS_KEY_ID"] = "testing"
     os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
-    os.environ["AWS_REGION"] = "us-east-1"  # must be a valid region
+    os.environ["AWS_REGION"] = "ap-southeast-2"  # must be a valid region

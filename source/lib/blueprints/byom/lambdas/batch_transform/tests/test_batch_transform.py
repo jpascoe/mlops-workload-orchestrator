@@ -24,7 +24,7 @@ from shared.helper import get_client, reset_client
 def mock_env_variables():
     new_env = {
         "model_name": "test",
-        "assets_bucket": "testbucket",
+        "assets_bucket": "fmgl-test-assetsbucket",
         "batch_inference_data": "test",
         "inference_instance": "ml.m5.4xlarge",
         "batch_job_output_location": "output-location",

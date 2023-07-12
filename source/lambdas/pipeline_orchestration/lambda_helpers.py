@@ -253,7 +253,7 @@ def get_common_realtime_batch_params(event: Dict[str, Any], region: str, stage: 
         get_image_uri(event.get("pipeline_type"), event, region) if os.environ["USE_MODEL_REGISTRY"] == "No" else ""
     )
     model_package_group_name = (
-        # model_package_name example: arn:aws:sagemaker:us-east-1:<ACCOUNT_ID>:model-package/xgboost/1
+        # model_package_name example: arn:aws:sagemaker:ap-southeast-2:<ACCOUNT_ID>:model-package/xgboost/1
         # the model_package_group_name in this case is "xgboost"
         event.get("model_package_name").split("/")[1]
         if os.environ["USE_MODEL_REGISTRY"] == "Yes"

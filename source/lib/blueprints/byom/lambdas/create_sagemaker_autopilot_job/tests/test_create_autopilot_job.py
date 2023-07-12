@@ -21,7 +21,7 @@ from tests.fixtures.autopilot_fixtures import mocked_job_name, mocked_autopilot_
 def test_handler(
     mocked_client, mocked_session, mocked_automl, mocked_job_name, mocked_autopilot_env_vars, mocked_automl_config
 ):
-    mocked_client.boto_region_name = "us-east-1"
+    mocked_client.boto_region_name = "ap-southeast-2"
     from main import handler
 
     handler(None, None)

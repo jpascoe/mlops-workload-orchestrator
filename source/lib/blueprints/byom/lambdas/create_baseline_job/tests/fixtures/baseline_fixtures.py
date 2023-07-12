@@ -33,10 +33,10 @@ def mock_basic_data_quality_env():
     data_quality_env = {
         "MONITORING_TYPE": "DataQuality",
         "BASELINE_JOB_NAME": "test-baseline-job",
-        "ASSETS_BUCKET": "testbucket",
+        "ASSETS_BUCKET": "fmgl-test-assetsbucket",
         "SAGEMAKER_ENDPOINT_NAME": "Sagemaker-test-endpoint",
         "BASELINE_DATA_LOCATION": "baseline_data.csv",
-        "BASELINE_JOB_OUTPUT_LOCATION": "s3://testbucket/baseline_output",
+        "BASELINE_JOB_OUTPUT_LOCATION": "s3://fmgl-test-blueprintbucket/baseline_output",
         "INSTANCE_TYPE": "ml.m5.large",
         "INSTANCE_VOLUME_SIZE": "20",
         "ROLE_ARN": "arn:aws:iam::account:role/myrole",

@@ -308,7 +308,7 @@ def test_create_model_explainability_baseline(
 
 def test_get_baseline_dataset_header(mocked_baseline_dataset_header):
     with patch("boto3.client") as patched_client:
-        s3_client = boto3.client("s3", region_name="us-east-1")
+        s3_client = boto3.client("s3", region_name="ap-southeast-2")
         # create config file content
         sample_content = "label,feature_1,feature_2,feature_3,feature_4\n1,19,3,9,15"
         encoded_config_file_body = sample_content.encode("utf-8")
@@ -326,7 +326,7 @@ def test_get_baseline_dataset_header(mocked_baseline_dataset_header):
 
 def test_get_model_name():
     with patch("boto3.client") as patched_client:
-        sm_client = boto3.client("sagemaker", region_name="us-east-1")
+        sm_client = boto3.client("sagemaker", region_name="ap-southeast-2")
         endpoint_name = "test-endpoint"
         model_name = "test-model"
         # set the return value for the mocked SageMaker client describe_endpoint

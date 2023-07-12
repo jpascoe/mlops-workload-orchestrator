@@ -507,8 +507,8 @@ def test_lambda_handler(
 @mock_s3
 def test_setup_s3_client(mocked_codepipeline_event):
     job_data = mocked_codepipeline_event[cp_job]["data"]
-    s3_clinet = setup_s3_client(job_data)
-    assert s3_clinet is not None
+    s3_client = setup_s3_client(job_data)
+    assert s3_client is not None
 
 
 @mock_s3
@@ -516,10 +516,11 @@ def test_setup_s3_client(mocked_codepipeline_event):
 def test_get_template(mocked_zipfile, mocked_codepipeline_event, mocked_regions):
     job_data = mocked_codepipeline_event[cp_job]["data"]
     temp_file = tempfile.NamedTemporaryFile()
-    s3_clinet = boto3.client("s3", region_name=mocked_regions[0])
-    s3_clinet.create_bucket(Bucket="test-bucket")
-    s3_clinet.upload_file(temp_file.name, "test-bucket", "template.zip")
+    s3_client = boto3.client("s3", region_name=mocked_regions[0])
+    s3_client.create_bucket(Bucket="fmgl-test-bucket",
+                            CreateBucketConfiguration={'LocationConstraint': mocked_regions[0]})
+    s3_client.upload_file(temp_file.name, "fmgl-test-bucket", "template.zip")
     artifact = job_data["inputArtifacts"][0]
-    template, params = get_template(s3_clinet, artifact, "template.yaml", "staging-config-test.json")
+    template, params = get_template(s3_client, artifact, "template.yaml", "staging-config-test.json")
     assert template is not None
     assert params is not None

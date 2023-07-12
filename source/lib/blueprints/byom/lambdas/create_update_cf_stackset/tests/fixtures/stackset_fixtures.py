@@ -31,7 +31,7 @@ def mocked_account_ids():
 
 @pytest.fixture()
 def mocked_regions():
-    return ["us-east-1"]
+    return ["ap-southeast-2"]
 
 
 @pytest.fixture()
@@ -79,7 +79,7 @@ def mocked_decoded_parameters():
         "stage_params_file": "staging-config-test.json",
         "account_ids": ["mocked_account_id"],
         "org_ids": ["mocked_org_unit_id"],
-        "regions": ["us-east-1"],
+        "regions": ["ap-southeast-2"],
     }
 
 

@@ -22,8 +22,8 @@ from index import copy_assets_to_s3, on_event, custom_resource, no_op
 
 @pytest.fixture(autouse=True)
 def mock_env_variables():
-    os.environ["SOURCE_BUCKET"] = "solutions-bucket"
-    os.environ["DESTINATION_BUCKET"] = "blueprints-bucket"
+    os.environ["SOURCE_BUCKET"] = "fmgl-test-solutions-bucket"
+    os.environ["DESTINATION_BUCKET"] = "fmgl-test-blueprints-bucket"
     os.environ["FILE_KEY"] = "blueprints.zip"
 
 
@@ -41,10 +41,12 @@ def mocked_response():
 @patch("index.os.walk")
 @patch("index.shutil.unpack_archive")
 def test_copy_assets_to_s3(mocked_shutil, mocked_walk, mocked_response):
-    s3_client = boto3.client("s3", region_name="us-east-1")
+    s3_client = boto3.client("s3", region_name="ap-southeast-2")
     testfile = tempfile.NamedTemporaryFile()
-    s3_client.create_bucket(Bucket="solutions-bucket")
-    s3_client.create_bucket(Bucket="blueprints-bucket")
+    s3_client.create_bucket(Bucket="fmgl-test-solutions-bucket",
+                            CreateBucketConfiguration={'LocationConstraint': os.environ["AWS_REGION"]})
+    s3_client.create_bucket(Bucket="fmgl-test-blueprints-bucket",
+                            CreateBucketConfiguration={'LocationConstraint': os.environ["AWS_REGION"]})
     s3_client.upload_file(testfile.name, os.environ["SOURCE_BUCKET"], os.environ["FILE_KEY"])
     local_file = tempfile.NamedTemporaryFile()
     s3_client.download_file(os.environ["SOURCE_BUCKET"], os.environ["FILE_KEY"], local_file.name)
