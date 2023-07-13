@@ -67,7 +67,7 @@ Upon successfully cloning the repository into your local development environment
 │       ├── aws_mlops_stack.py            [CDK implementation of the main framework ]
 │       └── conditional_resource.py       [a helper file to enable conditional resource provisioning in CDK]
 ├── .gitignore
-├── CHANGELOG.md                          [required for every solution to include changes based on version to auto[uild release notes]
+├── CHANGELOG.md                          [required for every solution to include changes based on version [build release notes]]
 ├── CODE_OF_CONDUCT.md                    [standardized open source file for all solutions]
 ├── CONTRIBUTING.md                       [standardized open source file for all solutions]
 ├── LICENSE.txt                           [required open source file for all solutions - should contain the Apache 2.0 license]

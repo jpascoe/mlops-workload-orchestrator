@@ -28,7 +28,7 @@
 set -e
 
 # Important: CDK global version number
-cdk_version=1.204.0
+cdk_version=1.181.1
 
 # Check to see if the required parameters have been provided:
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
@@ -339,3 +339,11 @@ echo "--------------------------------------------------------------------------
 # Delete the temporary /staging folder
 echo "rm -rf $staging_dist_dir"
 rm -rf $staging_dist_dir
+
+echo "------------------------------------------------------------------------------"
+echo "[Deploy] Copy to S3"
+echo "------------------------------------------------------------------------------"
+
+echo $PWD
+aws s3 cp ./global-s3-assets/ s3://$1-$AWS_REGION/$2/$3/ --recursive --acl bucket-owner-full-control
+aws s3 cp ./regional-s3-assets/ s3://$1-$AWS_REGION/$2/$3/ --recursive --acl bucket-owner-full-control

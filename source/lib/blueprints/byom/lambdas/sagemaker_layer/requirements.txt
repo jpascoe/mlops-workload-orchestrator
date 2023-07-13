@@ -1,4 +1,4 @@
 botocore==1.31.2
 boto3==1.28.2
 awscli==1.29.2
-sagemaker==2.171.0
+sagemaker==2.155.0
